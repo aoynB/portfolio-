@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MySite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e0e;
+      --surface: #161616;
+      --accent: #e8c97a;
+      --text: #f0ece4;
+      --muted: #888;
+      --border: #2a2a2a;
+      --green: #4caf7d;
+      --red: #e06c6c;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 6vw;
+      background: rgba(14,14,14,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      animation: fadeDown .6s ease both;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--accent);
+      letter-spacing: -.01em;
+    }
+
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 6vw;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 40%, rgba(232,201,122,.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(232,201,122,.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-size: .8rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.4rem;
+      animation: fadeUp .7s .2s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -.03em;
+      max-width: 14ch;
+      animation: fadeUp .7s .35s ease both;
+    }
+
+    .hero-title em { font-style: italic; color: var(--accent); }
+
+    .hero-sub {
+      margin-top: 1.8rem;
+      max-width: 46ch;
+      color: var(--muted);
+      font-size: 1.05rem;
+      animation: fadeUp .7s .5s ease both;
+    }
+
+    .hero-actions {
+      margin-top: 2.8rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp .7s .65s ease both;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: .85rem 2.2rem;
+      border-radius: 2px;
+      font-size: .9rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: all .25s;
+    }
+    .btn-primary { background: var(--accent); color: #0e0e0e; }
+    .btn-primary:hover { background: #f0d898; transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .btn:disabled { opacity: .6; cursor: not-allowed; transform: none !important; }
+
+    /* ── SECTION BASE ── */
+    section { padding: 7rem 6vw; }
+    .section-label {
+      font-size: .75rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .8rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--surface); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5vw;
+      align-items: center;
+      margin-top: 3rem;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .stat-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 1.8rem 1.5rem;
+      border-radius: 4px;
+      transition: border-color .25s, transform .25s;
+    }
+    .stat-box:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--accent);
+    }
+    .stat-desc { font-size: .85rem; color: var(--muted); margin-top: .3rem; }
+
+    /* ── SERVICES ── */
+    #services { border-top: 1px solid var(--border); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem 1.8rem;
+      transition: border-color .25s, transform .25s;
+    }
+    .service-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .service-icon {
+      width: 44px; height: 44px;
+      background: rgba(232,201,122,.12);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .service-card h3 { font-size: 1.1rem; font-weight: 500; margin-bottom: .5rem; }
+    .service-card p  { font-size: .9rem; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--surface); }
+    .contact-inner { max-width: 540px; }
+    .contact-inner > p { color: var(--muted); margin-bottom: 2.5rem; }
+
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label {
+      display: block;
+      font-size: .8rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .5rem;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: .85rem 1rem;
+      border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { height: 130px; resize: vertical; }
+
+    #form-status {
+      display: none;
+      margin-top: 1.2rem;
+      padding: 1rem 1.2rem;
+      border-radius: 4px;
+      font-size: .9rem;
+    }
+    #form-status.success {
+      display: block;
+      background: rgba(76,175,125,.12);
+      border: 1px solid rgba(76,175,125,.35);
+      color: var(--green);
+    }
+    #form-status.error {
+      display: block;
+      background: rgba(224,108,108,.12);
+      border: 1px solid rgba(224,108,108,.35);
+      color: var(--red);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2.5rem 6vw;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    footer p { font-size: .85rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      font-size: .85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 680px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span class="logo">aoynB.</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <p class="hero-tag">Welcome to my website</p>
+    <h1 class="hero-title">Building things that <em>matter.</em></h1>
+    <p class="hero-sub">I'm a creative developer & designer crafting clean, purposeful experiences for the web. Let's build something great together.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn btn-primary">See My Work</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <p class="section-label">About Me</p>
+    <h2 class="section-title">Who I am</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a passionate web developer with a love for clean design and efficient code. I build websites and apps that are fast, beautiful, and easy to use.</p>
+        <p>From landing pages to full web apps, I focus on crafting experiences that users enjoy and clients are proud of.</p>
+        <a href="#contact" class="btn btn-primary" style="margin-top:1rem; display:inline-block;">Let's Talk</a>
+      </div>
+      <div class="about-stats">
+        <div class="stat-box"><div class="stat-num">50+</div><div class="stat-desc">Projects Completed</div></div>
+        <div class="stat-box"><div class="stat-num">5★</div><div class="stat-desc">Client Ratings</div></div>
+        <div class="stat-box"><div class="stat-num">3+</div><div class="stat-desc">Years Experience</div></div>
+        <div class="stat-box"><div class="stat-num">∞</div><div class="stat-desc">Cups of Coffee</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <p class="section-label">What I Do</p>
+    <h2 class="section-title">Services</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <h3>Web Design</h3>
+        <p>Beautiful, modern layouts tailored to your brand and audience.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💻</div>
+        <h3>Development</h3>
+        <p>Clean, fast HTML/CSS/JS code — or full-stack apps if you need them.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📱</div>
+        <h3>Responsive Design</h3>
+        <p>Every site looks perfect on phones, tablets, and desktops.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3>Performance</h3>
+        <p>Optimized pages that load fast and rank well in search engines.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <p class="section-label">Get In Touch</p>
+    <h2 class="section-title">Contact Me</h2>
+    <div class="contact-inner">
+      <p>Have a project in mind? Fill out the form or reach me directly on Telegram — I'll get back to you within 24 hours.</p>
+      <a href="https://t.me/aoynB" target="_blank" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:.5rem;margin-bottom:2rem;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Message me on Telegram
+      </a>
+
+      <!-- ═══════════════════════════════════════════════════════
+           Replace YOUR_FORMSPREE_ID in the <script> below
+           with your real Formspree form ID (e.g. xyzabcde)
+           Get it free at https://formspree.io
+           ═══════════════════════════════════════════════════════ -->
+      <form id="contact-form">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input id="name" type="text" name="name" placeholder="John Doe" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input id="email" type="email" name="email" placeholder="john@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="submit-btn">Send Message</button>
+        <div id="form-status"></div>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 MySite. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="https://t.me/aoynB" target="_blank">Telegram</a>
+      <a href="#" target="_blank">Twitter</a>
+      <a href="#" target="_blank">GitHub</a>
+      <a href="#" target="_blank">LinkedIn</a>
+    </div>
+  </footer>
+
+  <script>
+    // ─────────────────────────────────────────────────────────────────
+    //  STEP 1 → Go to https://formspree.io, sign up free
+    //  STEP 2 → Create a new form, copy your Form ID (e.g. xyzabcde)
+    //  STEP 3 → Replace 'YOUR_FORMSPREE_ID' below with that ID
+    // ─────────────────────────────────────────────────────────────────
+    const FORMSPREE_ID = 'https://formspree.io/f/mnjrqbvq';
+
+    const form      = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const status    = document.getElementById('form-status');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (FORMSPREE_ID === 'YOUR_FORMSPREE_ID') {
+        status.className = 'error';
+        status.textContent = '⚠️ Setup needed: open index.html and replace YOUR_FORMSPREE_ID with your Formspree ID.';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      status.className = '';
+      status.style.display = 'none';
+
+      try {
+        const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          status.className = 'success';
+          status.textContent = '✅ Message sent! I\'ll get back to you within 24 hours.';
+          form.reset();
+        } else {
+          const json = await res.json();
+          const msg = json.errors ? json.errors.map(err => err.message).join(', ') : 'Something went wrong.';
+          status.className = 'error';
+          status.textContent = '❌ ' + msg;
+        }
+      } catch {
+        status.className = 'error';
+        status.textContent = '❌ Network error. Please try again.';
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+    });
+  </script>
+</body>
+</html>
